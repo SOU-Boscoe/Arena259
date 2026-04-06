@@ -9,5 +9,4 @@ We can add random events to make certain abilities more or less effective. It do
 > Each class will have attributes, such as HP, Defense, Damage, etc...
 If we say each class can have n attribute points, each classmate can distribute the points into their class accross all the stats.
 With some tinkering, this could be a good step for ensuring balance.
-=======
->>>>>>> upstream/main
+
