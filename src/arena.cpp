@@ -1,8 +1,9 @@
 #include <iostream>
-#include "Arena.h"
+#include "arena.h"
 
 void Arena::battle(Creature &first, Creature &second)
 {
+        
     std::cout << first.getName() << " vs " << second.getName() << std::endl;
 
     int turn = 1;

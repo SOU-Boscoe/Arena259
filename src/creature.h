@@ -1,4 +1,8 @@
-// An incomplete example of what a base creature class might look like.
+#ifndef CREATURE_H
+#define CREATURE_H
+
+#include <iostream>
+#include <string>
 
 class Creature
 {
@@ -35,3 +39,41 @@ public:
 
     virtual ~Creature() = default;
 };
+
+class Imp : public Creature {
+    public: 
+        Imp() : Creature("Imp", 60){};
+
+        ~Imp() = default; 
+
+        void attack(Creature &other) override {
+            int damage = attack_ - ((rand() % 10) - 1);
+            std::cout << "Imp claws at " << other.getName() << " furiously!" << std::endl;
+            std::cout << other.getName() << " takes " << damage << " damage!" << std::endl;
+            other.takeDamage(damage);}
+
+        void special(Creature &other) {}
+
+    private:
+        int attack_= 16;
+};
+
+class Cherub : public Creature {
+    public: 
+        Cherub() : Creature("Cherub", 60){};
+
+        ~Cherub() = default; 
+
+        void attack(Creature &other) override {
+            int damage = attack_ + ((rand() % 8) + 1);
+            std::cout << "Cherub sings at " << other.getName() << " lovingly!" << std::endl;
+            std::cout << other.getName() << " takes " << damage << " damage!" << std::endl;
+            other.takeDamage(damage);}
+
+        void special(Creature &other) {}
+
+    private:
+        int attack_= 10;
+};
+
+#endif

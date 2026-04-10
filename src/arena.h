@@ -1,7 +1,7 @@
 #ifndef ARENA_H
 #define ARENA_H
 
-#include "Creature.h"
+#include "creature.h"
 
 class Arena
 {
