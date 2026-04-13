@@ -1,2 +1,8 @@
+.gitignore
 /env
 arena
+main
+Makefile
+test1
+.DS_Store
+*.exe

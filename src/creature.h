@@ -2,34 +2,39 @@
 #define CREATURE_H
 
 #include <string>
+#include <iostream>
+
+const int MIN_HEALTH = 80;
+const int MAX_HEALTH = 120;
 
 class Creature
 {
-public:
+private:
     std::string name;
     int health;
     int damage;
 
-    Creature(std::string n, int h, int d)
-    {
-        name = n;
-        health = h;
-        damage = d;
-    }
+    static int creatureCount;
 
-    void attack(Creature &other)
-    {
-        other.health -= damage;
-        if (other.health < 0)
-        {
-            other.health = 0;
-        }
-    }
+public:
+    // constructor
+    Creature(std::string n, int h, int d);
 
-    bool isAlive()
-    {
-        return health > 0;
-    }
+    // getters
+    std::string getName() const;
+    int getHealth() const;
+    int getDamage() const;
+
+    static int getCreatureCount();
+
+    // behavior
+    void takeDamage(int dmg);
+    void attack(Creature &other);
+    bool isAlive() const;
+
+    // validation
+    static bool validate(Creature &c);
+    static bool validateBattle(Creature &a, Creature &b);
 };
 
 #endif
