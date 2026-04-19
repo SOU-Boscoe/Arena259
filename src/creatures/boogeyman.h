@@ -1,6 +1,6 @@
 #ifndef BOOGEYMAN_H
 #define BOOGEYMAN_H
-#include "creature.h"
+#include "../creature.h"
 
 // declare creature function
 
