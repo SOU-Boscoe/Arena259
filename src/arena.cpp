@@ -1,36 +1,60 @@
 #include <iostream>
+#include <iomanip>
 #include "arena.h"
 
 void Arena::battle(Creature &a, Creature &b)
 {
-    std::cout << a.name << " vs " << b.name << std::endl;
+    std::cout << "=============================\n";
+    std::cout << "        ARENA BATTLE        \n";
+    std::cout << "=============================\n";
+
+    std::cout << a.name << " vs " << b.name << "\n\n";
 
     int turn = 1;
 
     while (a.isAlive() && b.isAlive())
     {
-        std::cout << "\nTurn " << turn << std::endl;
+        std::cout << "-----------------------------\n";
+        std::cout << "Turn " << turn << "\n";
+        std::cout << "-----------------------------\n";
 
-        std::cout << a.name << " attacks!" << std::endl;
+        std::cout << std::left
+                  << std::setw(10) << a.name << " HP: " << a.health << "\n"
+                  << std::setw(10) << b.name << " HP: " << b.health << "\n\n";
+
+        std::cout << a.name << " attacks " << b.name << "\n";
         a.attack(b);
-        std::cout << b.name << " health: " << b.health << std::endl;
+
+        std::cout << b.name << " HP is now " << b.health << "\n";
 
         if (!b.isAlive())
+        {
+            std::cout << "\n" << b.name << " has died\n";
             break;
+        }
 
-        std::cout << b.name << " attacks!" << std::endl;
+        std::cout << "\n" << b.name << " attacks back at " << a.name << "\n";
         b.attack(a);
-        std::cout << a.name << " health: " << a.health << std::endl;
+
+        std::cout << a.name << " HP is now " << a.health << "\n";
+
+        if (!a.isAlive())
+        {
+            std::cout << "\n" << a.name << " has died :(\n";
+            break;
+        }
 
         turn++;
     }
 
+    std::cout << "\n=============================\n";
     if (a.isAlive())
     {
-        std::cout << a.name << " wins!" << std::endl;
+        std::cout << a.name << " WINS XD\n";
     }
     else
     {
-        std::cout << b.name << " wins!" << std::endl;
+        std::cout << b.name << " WINS :D\n";
     }
+    std::cout << "=============================\n";
 }
