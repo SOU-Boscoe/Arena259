@@ -9,11 +9,11 @@ HP = 120
 
 ## Attack Description
 
-Attacks at x3 when called by player.
+damage = 18
 
 ## Special Ability (optional)
-Can heal players or add atttack against opponent once per round per player.
+Can heal players (+20HP) or add attack against opponent (x3) once per round per player.
 
 ## Weakness
 
-Can be called by anyone per round.
+Can be called by anyone per round but only once.
