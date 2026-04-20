@@ -11,7 +11,7 @@
 
 //Main testing function
 void test_max_damage(const Creature& c) {
-    if (!(2 * c.damage < 100)) {
+    if (!(2 * c.damage < 60)) {
         std::cout << "This creature does too much damage too quickly and must be rebalanced!" << std::endl;
         assert(false);
     }
@@ -50,6 +50,6 @@ int main(int argc, char* argv[]) {
     //Runs the test proper and prints out the "you did less than 100 damage in 2 turns" then finishes.
     //If it's more it'll crash
     test_max_damage(c);
-    std::cout << "Test passed for " << c.name << ": Max damage in two turns is less than 100." << std::endl;
+    std::cout << "Test passed for " << c.name << ": Max damage in two turns is less than 60." << std::endl;
     return 0;
 }
