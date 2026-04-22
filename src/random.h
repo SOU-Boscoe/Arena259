@@ -6,8 +6,8 @@
 
 class Random {
     public:
-        inline static bool flipCoin() { return COIN(yield);};
-        inline static int randomValue(int min, int max) { return std::uniform_int_distribution<>{min, max}(yield); }
+         static bool flipCoin();
+         static int randomValue(int min, int max);
     private:
         inline static std::random_device rd{};
         inline static std::mt19937 yield{rd()};
