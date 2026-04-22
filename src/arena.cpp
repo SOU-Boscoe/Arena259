@@ -34,3 +34,45 @@ void Arena::battle(Creature &a, Creature &b)
         std::cout << b.name << " wins!" << std::endl;
     }
 }
+
+/*
+void Arena::tournament(Creature&a, Creature&b, Creature&c, Creature&d,
+                       Creature&e, Creature&f, Creature&g, Creature&h){
+    std::vector<Creature*> fighters = { &a, &b, &c, &d, &e, &f, &g, &h };
+
+    std::random_device rd;
+    std::mt19937 gen(rd());
+    std::shuffle(fighters.begin(), fighters.end(), gen);
+
+    std::cout << "---------------------------------\n";
+    std::cout << "--- The tournament has begun! ---\n";
+    std::cout << "---------------------------------\n\n";
+
+    while (fighters.size() > 1){
+        std::vector<Creature*> winners;
+
+        for (size_t i = 0; i < fighters.size(); i +=2){
+            Creature* c1 = fighters[i];
+            Creature* c2 = fighters[i+1];
+            int hlthval1 = c1->health;
+            int hlthval2 = c2->health;
+            battle(*c1, *c2);
+
+            if (c1->isAlive()){
+                winners.push_back(c1);
+                c1->health = hlthval1;
+            }
+            else{
+                winners.push_back(c2);
+                c2->health = hlthval2;
+            }
+            std::cout << "---------------------------------\n\n";
+        }
+        fighters = winners;
+    }
+    std::cout << "---------------------------------\n";
+    std::cout << "--- The tournament has ended! ---\n";
+    std::cout << "---------------------------------\n\n";
+    std::cout << "- The tournament champion is: " << fighters[0]->name << "! -\n";
+    return;
+*/
