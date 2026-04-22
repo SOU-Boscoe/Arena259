@@ -21,7 +21,7 @@ void test_max_damage(const Creature& c) {
 int main(int argc, char* argv[]) {
     if (argc < 2) {
         std::cout << "Usage: " << argv[0] << " <creature_name>" << std::endl;
-        std::cout << "Available creatures: viper, clawdragon, giantleech, segoblin, sumo_sally" << std::endl;
+        std::cout << "Available creatures: viper, clawdragon, giantleech, segoblin, sumo_sally, boogeyman" << std::endl;
         return 1;
     }
 
@@ -42,6 +42,8 @@ int main(int argc, char* argv[]) {
         c = makeSEGoblin();
     } else if (creature_name == "sumo_sally") {
         c = make_sumo_sally();
+    } else if (creature_name == "boogeyman") {
+        c = makeBoogeyman();
     } else {
         std::cout << "Unknown creature: " << creature_name << std::endl;
         return 1;
