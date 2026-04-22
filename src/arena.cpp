@@ -4,6 +4,11 @@
 
 void Arena::battle(Creature &a, Creature &b)
 {
+
+    if(!Creature::validateBattle(a, b)){
+        return;
+    }
+    
     std::cout << a.name << " vs " << b.name << std::endl;
 
     int turn = 1;
