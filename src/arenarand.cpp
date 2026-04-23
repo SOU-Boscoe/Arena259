@@ -1,4 +1,4 @@
-#include "willynilly.h"
+#include "arenarand.h"
 
 
 bool ArenaRand::flipCoin() { return COIN(gen); }
