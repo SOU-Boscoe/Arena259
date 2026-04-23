@@ -66,8 +66,13 @@ void Arena::battle(Creature &temp1, Creature &temp2)
     {
         std::cout << b.name << " defeats " << a.name << "!"<< std::endl;
         std::cout << b.name << " has " << b.health << " HP remaining." << std::endl;
+
+        std::cout << "\n=============================\n";
     }
+<<<<<<< HEAD
     std::cout << "=============================\n";
+=======
+>>>>>>> 8b67101 (Fixed Lab 01, Commented Out Tournament Method)
 }
 
 /*
