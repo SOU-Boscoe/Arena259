@@ -52,8 +52,9 @@ void Arena::battle(Creature &a, Creature &b)
     {
         std::cout << b.name << " defeats " << a.name << "!"<< std::endl;
         std::cout << b.name << " has " << b.health << " HP remaining." << std::endl;
+
+        std::cout << "\n=============================\n";
     }
-<<<<<<< HEAD
 }
 
 /*
@@ -97,7 +98,4 @@ void Arena::tournament(Creature&a, Creature&b, Creature&c, Creature&d,
     std::cout << "- The tournament champion is: " << fighters[0]->name << "! -\n";
     return;
 */
-=======
-    std::cout << "\n=============================\n";
-}
->>>>>>> upstream/main
+
