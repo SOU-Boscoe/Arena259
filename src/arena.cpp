@@ -8,7 +8,8 @@ void Arena::battle(Creature &a, Creature &b)
         return;
     }
     
-    std::cout << a.name << " vs " << b.name << std::endl;
+    // Changing all these from name / health to getName / getHealth
+    std::cout << a.getName() << " vs " << b.getName() << std::endl;
 
     int turn = 1;
 
@@ -16,26 +17,26 @@ void Arena::battle(Creature &a, Creature &b)
     {
         std::cout << "\nTurn " << turn << std::endl;
 
-        std::cout << a.name << " attacks!" << std::endl;
+        std::cout << a.getName() << " attacks!" << std::endl;
         a.attack(b);
-        std::cout << b.name << " health: " << b.health << std::endl;
+        std::cout << b.getName() << " health: " << b.getHealth() << "\tdefense: " << b.getDefense() << std::endl;
 
         if (!b.isAlive())
             break;
 
-        std::cout << b.name << " attacks!" << std::endl;
+        std::cout << b.getName() << " attacks!" << std::endl;
         b.attack(a);
-        std::cout << a.name << " health: " << a.health << std::endl;
+        std::cout << a.getName() << " health: " << a.getHealth() << "\tdefense: " << a.getDefense() << std::endl;
 
         turn++;
     }
 
     if (a.isAlive())
     {
-        std::cout << a.name << " wins!" << std::endl;
+        std::cout << a.getName() << " wins!" << std::endl;
     }
     else
     {
-        std::cout << b.name << " wins!" << std::endl;
+        std::cout << b.getName() << " wins!" << std::endl;
     }
 }

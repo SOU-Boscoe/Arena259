@@ -6,17 +6,46 @@
 
 class Creature
 {
-public:
+
+private:
     std::string name;
     int health;
     int damage;
+    int defense;        // Added defense stat
 
-    Creature(std::string n, int h, int d)
-    {
-        name = n;
-        health = h;
-        damage = d;
+    // Added the count of creatures but still includes copies
+    inline static int creatureCount = 0;
+
+public:
+
+    // Changed to use Initialiser
+    Creature(std::string n, int h, int d, int def = 0)
+    : name(n), health(h), damage(d), defense(def){
+        creatureCount++;
     }
+
+    // Adding the accessirs, the getters
+    std::string getName() const{
+        return name;
+    }
+
+    int getHealth() const{
+        return health;
+    }
+
+    int getDamage() const{
+        return damage;
+    }
+
+    int getDefense() const{
+        return defense;
+    }
+
+    static int getCreatureCount(){
+        return creatureCount;
+    }
+
+
 
     void attack(Creature &other)
     {
