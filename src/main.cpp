@@ -9,6 +9,8 @@ int main()
     Creature c2(makeGiantleech());
 
     Arena::battle(c1, c2);
+    std::cout << "Total creatures created: "
+          << Creature::getCreatureCount() << std::endl;
 
     return 0;
 }

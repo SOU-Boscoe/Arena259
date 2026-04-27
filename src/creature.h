@@ -24,7 +24,7 @@ public:
 
    void takeDamage(int dmg)
     {
-        health -= std::max(0, dmg - defense); // Implementing defense into takeDamage method to make it work.
+        health -= std::max(0, dmg - defense); // Implementing defense into takeDamage method to make it work. Simple implmentation, defense subtracts damage.
     }
     void attack(Creature &target)
     {
