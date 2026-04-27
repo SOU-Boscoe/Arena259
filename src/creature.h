@@ -11,30 +11,36 @@ const int MAX_HEALTH = 120;
 class Creature
 {
 public:
-    std::string name;
-    int health;
-    int damage;
+    //Getters method for name, health, and for my idea/suggestion: Defense!
+    std::string getName() const { return name; }
+    int getHealth() const { return health; }
+    int getDamage() const { return damage; }
+    int getDefense() const { return defense; }
 
-    Creature(std::string n, int h, int d)
+    // Reformed constructor to work with the new getter dethods instead.
+    Creature(std::string n, int h, int d, int def): name(n), health(h), damage(d), defense(def) {}
+
+    creatureCount++;
+
+   void takeDamage(int dmg)
     {
-        name = n;
-        health = h;
-        damage = d;
+        health -= std::max(0, dmg - defense); // Implementing defense into takeDamage method to make it work. Simple implmentation, defense subtracts damage.
+    }
+    void attack(Creature &target)
+    {
+        target.takeDamage(damage);
     }
 
-    void attack(Creature &other)
-    {
 
-        other.health -= damage;
-        if (other.health < 0)
-        {
-            other.health = 0;
-        }
-    }
-
-    bool isAlive()
+    bool isAlive() const
     {
         return health > 0;
+    }
+
+    static int creatureCount;
+
+    static int getCreatureCount() {
+        return creatureCount;
     }
 
     static bool validate(Creature &c){
@@ -62,6 +68,14 @@ public:
         }
         return true;
     }
+
+int Creature::creatureCount = 0;
+
+private:
+    std::string name;
+    int health;
+    int damage;
+    int defense;
 };
 
 #endif
