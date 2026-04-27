@@ -10,5 +10,8 @@ int main()
 
     Arena::battle(c1, c2);
 
+    std::cout << "Total creatures created: "
+          << Creature::getCreatureCount() << std::endl;
+          
     return 0;
 }

@@ -1,4 +1,4 @@
-#include <iostream>
+//#include <iostream>
 #include "sumo_sally.h"
 
 // This is the creation of a creature called Sumo Sally. 
