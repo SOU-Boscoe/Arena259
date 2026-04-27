@@ -3,8 +3,6 @@
 #include "./creatures/sumo_sally.h"
 #include "./creatures/giantleech.h"
 
-int Creature::creatureCount = 0;
-
 int main()
 {
     Creature c1(make_sumo_sally());
