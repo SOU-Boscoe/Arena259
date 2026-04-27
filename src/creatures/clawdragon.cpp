@@ -5,7 +5,7 @@
 
 Creature makeClawdragon(){
 
-   Creature clawdragon("Clawdragon", 101, 18, 3);
+   Creature clawdragon("Clawdragon", 101, 18);
 
     return clawdragon;
 }

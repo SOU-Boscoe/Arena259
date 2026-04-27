@@ -3,6 +3,6 @@
 // Oz and Eldon
 
 Creature makeGiantleech() {
-    Creature leech = Creature("Giant Leech", 100, 18, 2);
+    Creature leech = Creature("Giant Leech", 100, 18);
     return leech;
 }
