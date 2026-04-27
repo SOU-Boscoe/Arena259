@@ -6,7 +6,7 @@
 class Arena
 {
 public:
-    static void battle(Creature &a, Creature &b);
+    static void battle(Creature &temp1, Creature &temp2);
 };
 
 #endif
