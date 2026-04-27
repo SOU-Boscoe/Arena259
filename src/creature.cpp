@@ -2,14 +2,26 @@
 
 int Creature::creatureCount = 0;
 
-/*Implimentation of the Full data feild constructor*/
-Creature::Creature(std::string n, int h, int d): name(n), health(h), damage(d){
+/*Implimentation of the Full data feild constructor -type*/
+Creature::Creature(std::string n, int h, int d): name(n), health(h), damage(d), type(NONE){
+    creatureCount++;
+}
+
+/*Implimentation of the Full data feild constructor including type*/
+Creature::Creature(std::string n, int h, int d, Type t): name(n), health(h), damage(d), type(t){
     creatureCount++;
 }
 
 /*Default destructor, decriments creatureCount*/
 Creature::~Creature(){
     creatureCount--;
+}
+
+/*Implimentation of hasAdvantageOver, returns True if current creature has a type advantage over the other, passes in a creature reference. (WATER > FIRE > NATURAL > WATER)*/
+bool Creature::hasAdvantageOver(const Creature &other) const {
+    if (type == NONE || other.type == NONE) return false;
+
+    return (type % 3) + 1 == other.type;
 }
 
 /*Attack method, uses the "takeDamage" method of the other creature to inflict damage onto an opponent"*/

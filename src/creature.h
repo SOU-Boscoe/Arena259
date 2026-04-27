@@ -18,15 +18,30 @@ private:
     int health;
     int damage;
 
+    enum Type {
+    NONE = 0,
+    WATER = 1,
+    FIRE = 2,
+    NATURAL = 3
+    };
+
+    Type type;
+
     static int creatureCount;
 
 public:
 
-    /*Full data feild constructor, passes in a string for "name", int for "health", and int for "damage"*/
+    /*Full data feild constructor - type, passes in a string for "name", int for "health", and int for "damage", type is set to NONE*/
     Creature(std::string n, int h, int d);
+
+    /*Full data feild constructor, passes in a string for "name", int for "health", int for "damage", and Type for "type"*/
+    Creature(std::string n, int h, int d, Type t);
 
     /*Default destructor*/
     ~Creature();
+
+    /*Method to check creature advantage, can be fully incorperated into damage calculation to give differing damage values against creatures of differing types. (not fully implimented)*/
+    bool hasAdvantageOver(const Creature &other) const;
 
     /*Attack method used to inflict damage onto an opponent", passes in a creature reference as the opponent*/
     void attack(Creature &other) const;
