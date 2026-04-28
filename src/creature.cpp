@@ -1,12 +1,18 @@
 #include "creature.h"
 #include <iostream>
 
-// 🔥 Static variable definition (ONLY ONCE in entire program)
+// Static variable definition
 int Creature::creatureCount = 0;
 
 // Constructor
 Creature::Creature(const std::string& n, int h, int d, int def)
     : name(n), health(h), damage(d), defense(def)
+{
+    creatureCount++;
+}
+
+Creature::Creature(const std::string& n, int h, int d)
+    : name(n), health(h), damage(d)
 {
     creatureCount++;
 }

@@ -16,6 +16,7 @@ private:
 public:
     // Constructor
     Creature(const std::string& n, int h, int d, int def);
+    Creature(const std::string& n, int h, int d);
 
     // Getters (const)
     std::string getName() const;
