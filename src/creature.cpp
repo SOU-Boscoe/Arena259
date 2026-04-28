@@ -1,53 +1,47 @@
+#include "Creature.h"
 #include <string>
 #include <iostream>
 
+    //instantiates Creature object
     Creature::Creature(std::string n, int h, int d) : name(n), health(h), damage(d){}
 
-    Creature::attack()
-    {
+    //determins how much damage the creature will do
+    Creature::attack(){
+        return damage;
+    }
 
-        other.health -= current.damage;
-        if (other.health < 0)
-        {
-            other.health = 0;
+    //takes the damage value from the attack function and subtracts 
+    //that from the second creatures health.
+    Creature::takeDamage(int d){
+        health -= damage;
+    }
+
+    //determins a speed stat for the creature having negative effects
+    //if the health or damage stats of the creature is high.
+    Creature::determinSpeed(){
+        if(health > 115 || damage > 40){
+            speed = 1;
+        }
+
+        else if(health > 110 || damage > 30){
+            speed = 2;
+        }
+
+        else if(health > 100 || damage > 20){
+            speed = 3;
+        }
+
+        else{
+            speed = 4;
         }
     }
 
-    Creature::isAlive()
-    {
-        return current.health > 0;
+    //Checks if the creature is alive.
+    Creature::isAlive(Creature &current){
+        return health > 0;
     }
-    /*
-    const bool validate(Creature &current){
-        if(current.health < MIN_HEALTH || current.health > MAX_HEALTH){
-            std::cerr << "Error: " << current.name << " has invalid health. Health must be between " << MIN_HEALTH << " and " << MAX_HEALTH << std::endl;
-            return false;
-        }
-        if(current.damage <= 0 || current.damage > 20){
-            std::cerr << "Error: " << current.name << " has invalid damage. Damage must be > 0 or <= 20" << std::endl;
-            return false;
-        }
-        return true;
-        // minimum health to start a battle is 80, otherwise the battle would be predictable
-        // 
-    }
-    */
 
-    /*
-    If Creature a or b does not have the valid stats for health or damage
-    It will output an error message and abort
-    */
-
-    /*
-    const bool validateBattle(Creature &a, Creature &b){
-        if(!validate(a) || !validate(b)){
-            std::cerr << "The Battle cannot take place as there are invalid stats" << std::endl;
-            return false;
-        }
-        return true;
-    }
-    */
-
+    //getter and setter functions
     Creature::getName(){
         return name;
     }
@@ -58,4 +52,24 @@
 
     Creature::getDamage(){
         return damage;
+    }
+
+    Creature::getSpeed(){
+        return speed
+    }
+    
+    Creature::setName(std::string n){
+        name = n;
+    }
+
+    Creature::setHealth(int h){
+        health = h;
+    }
+
+    Creature::setDamage(int d){
+        damage = d;
+    }
+
+    Creature::setSpeed(int s){
+        speed = s;
     }

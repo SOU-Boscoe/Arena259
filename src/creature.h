@@ -1,8 +1,8 @@
 #ifndef CREATURE_H
 #define CREATURE_H
 
-#include <string>
 #include <iostream>
+
 
 const int MIN_HEALTH = 80;
 const int MAX_HEALTH = 120;
@@ -14,27 +14,42 @@ private:
     std::string name;
     int health;
     int damage;
+    int speed;
 
 public:
-    Creature(std::string n, int h, int d) : name(n), health(h), damage(d){}
+    //instantiates Creature object
+    Creature(std::string n, int h, int d);
 
+    //determins how much damage the creature will do
     int attack();
 
+    //takes the damage value from the attack function and subtracts 
+    //that from the second creatures health.
     void takeDamage(int d);
 
+    //determins a speed stat for the creature having negative effects
+    //if the health or damage stats of the creature is high.
+    void determinSpeed();
+
+    //Checks if the creature is alive.
     const bool isAlive(Creature &current);
 
+    //getter and setter functions
     const std::string getName();
 
     const int getHealth();
 
     const int getDamage();
 
+    const int getSpeed();
+
     void setName(string::n);
 
     void setHealth(int h);
     
     void setDamage(int d);
+
+    void setSpeed(int s);
 };
 
 #endif
