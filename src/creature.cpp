@@ -1,44 +1,22 @@
-#ifndef CREATURE_H
-#define CREATURE_H
-
 #include <string>
 #include <iostream>
 
-const int MIN_HEALTH = 80;
-const int MAX_HEALTH = 120;
-static int creatureCount = 0;
+    Creature::Creature(std::string n, int h, int d) : name(n), health(h), damage(d){}
 
+    Creature::attack()
+    {
 
-class Creature{
-private:
-    std::string name;
-    int health;
-    int damage;
+        other.health -= current.damage;
+        if (other.health < 0)
+        {
+            other.health = 0;
+        }
+    }
 
-public:
-    Creature(std::string n, int h, int d) : name(n), health(h), damage(d){}
-
-    int attack();
-
-    void takeDamage(int d);
-
-    const bool isAlive(Creature &current);
-
-    const std::string getName();
-
-    const int getHealth();
-
-    const int getDamage();
-
-    void setName(string::n);
-
-    void setHealth(int h);
-    
-    void setDamage(int d);
-};
-
-#endif
-//this code is leftover functions from when I modified the class in Lab2.
+    Creature::isAlive()
+    {
+        return current.health > 0;
+    }
     /*
     const bool validate(Creature &current){
         if(current.health < MIN_HEALTH || current.health > MAX_HEALTH){
@@ -69,3 +47,15 @@ public:
         return true;
     }
     */
+
+    Creature::getName(){
+        return name;
+    }
+
+    Creature::getHealth(){
+        return health;
+    }
+
+    Creature::getDamage(){
+        return damage;
+    }
