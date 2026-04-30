@@ -25,6 +25,7 @@ private:
 	int health;
 	int startDamage; // maximum damage stat
 	int damage;
+	int defense;
 	int damageDealt;
 	// the start variables don't get setters, since they don't ever change.
 	// we can't make them const though because they are declare on construction.
@@ -32,12 +33,14 @@ private:
 public:
 	// Constructor 
 	Creature(const std::string&, const int&, const int&); // name, health, damage
+	Creature(const std::string&, const int&, const int&, const int&); // name, health, damage, defense
 
 	// Getters
 	std::string getName() const; // returns the name variable
 	int getHealth() const; // returns the health variable
 	int getStartHealth() const;
 	int getDamage() const; // returns the damage variable
+	int getDefense() const; // returns the defense variable
 	int getStartDamage() const;
 	int getDamageDealt() const;
 	bool isAlive() const; // checks if the health is >= 0
@@ -47,6 +50,7 @@ public:
 	void setName(const std::string&); // set name
 	void setHealth(const int&); // set health
 	void setDamage(const int&); // set damage
+	void setDefense(const int&); // set defense
 	void heal(const int&); // increase health
 	void incDamage(const int&); // increase damage
 	void incDamageDealt(const int&); // increase damage dealt stat

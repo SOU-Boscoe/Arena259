@@ -40,12 +40,12 @@ void Arena::battle(Creature &temp1, Creature &temp2)
                   << std::setw(10) << b.getName() << " HP: " << b.getHealth() << "\n";
 
 
-        std::cout << a.getName() << " attacks!" << std::endl;
+        std::cout << a.getName() << " attacks " << b.getName() << " with " << (a.getDamage() - b.getDefense()) << " attack damage!" << std::endl;
         a.attack(b);
         std::cout << b.getName() << " health: " << b.getHealth() << std::endl;
 
 
-        std::cout << b.getName() << " attacks!" << std::endl;
+        std::cout << b.getName() << " attacks " << b.getName() << " with " << (b.getDamage() - a.getDefense()) << " attack damage!" << std::endl;
         b.attack(a);
         std::cout << a.getName() << " health: " << a.getHealth() << std::endl;
 

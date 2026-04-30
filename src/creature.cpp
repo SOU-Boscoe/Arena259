@@ -22,6 +22,21 @@ Creature::Creature(const std::string& newName, const int& newHealth, const int& 
 	setHealth(newHealth);
 
 	setDamage(newDamage);
+	setDefense(0);
+	startDamage = newDamage;
+	damageDealt = 0;
+
+	creatureCount++;
+}
+
+Creature::Creature(const std::string& newName, const int& newHealth, const int& newDamage , const int& newDefense) {
+	setName(newName); // set all starting variables
+
+	startHealth = newHealth;
+	setHealth(newHealth);
+
+	setDamage(newDamage);
+	setDefense(newDefense);
 	startDamage = newDamage;
 	damageDealt = 0;
 
@@ -44,6 +59,10 @@ int Creature::getStartHealth() const {
 
 int Creature::getDamage() const {
 	return damage; // return damage
+}
+
+int Creature::getDefense() const {
+	return defense; // return damage
 }
 
 int Creature::getStartDamage() const {
@@ -85,6 +104,13 @@ void Creature::setDamage(const int& newDamage) {
 	}
 }
 
+void Creature::setDefense(const int& newDefense) {
+	defense = newDefense; // update defense
+	if (getDefense() < 0) { // don't allow defense to be negative
+		defense = 0;
+	}
+}
+
 // Incrementers
 void Creature::heal(const int& increase) {
 	setHealth(getHealth() + increase); // set the health + increase
@@ -105,8 +131,11 @@ bool Creature::attack(Creature& otherCreature) {
 	incDamageDealt(getDamage());
 	return true;
 }
+
 void Creature::takeDamage(Creature &otherCreature) {
-	otherCreature.setHealth(otherCreature.getHealth() - getDamage()); // set health to current health minus the creatures damage
+	if (getDamage() - otherCreature.getDefense() >= 0){
+		otherCreature.setHealth(otherCreature.getHealth() - (getDamage() - otherCreature.getDefense()));
+	}
 }
 
 
