@@ -3,7 +3,7 @@
 #include <iostream>
 #include <string>
 using namespace std;
-Creature makeboogeyman() {
+Creature makeBoogeyman() {
     Creature boogeyman = Creature("Boogeyman", 120, 15);
     return boogeyman;
 }
