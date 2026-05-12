@@ -56,6 +56,8 @@ public:
 	// Damage other creatures
 	void attack(Creature& target); // decreases health of target 
 	void takeDamage(int amount); // decrease this creature's health by amount - defense
+	virtual void specialMove(Creature &other); // why do we put declaration in the .h file? because we want to be able to call the special move of a creature without knowing what type it is
+	// what does virtual mean? it means that if we have a pointer or reference to a base class (Creature) that actually points to a derived class (like Dragon), and we call specialMove on it, it will call the specialMove of the derived class (Dragon) instead of the base class (Creature). polymorphism
 
 	// Validation checks
 	static bool validate(Creature&); // returns true if health and damage are in valid

@@ -115,6 +115,9 @@ void Creature::attack(Creature& target) {
 	target.takeDamage(damage);
 	incDamageDealt(damage);
 }
+void Creature::specialMove(Creature &other) {
+	std::cout << name << "has no special move." << std::endl;
+} // why do we put implementation in the .cpp file? because we want to be able to change the implementation of the special move without having to recompile any code that includes creature.h, since the declaration of the special move is in creature.h, but the implementation is in creature.cpp. if we put the implementation in creature.h, then any code that includes creature.h would have to be recompiled every time we change the implementation of the special move
 
 
 
