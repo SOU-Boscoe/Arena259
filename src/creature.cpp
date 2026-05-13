@@ -147,3 +147,10 @@ bool Creature::validateBattle(Creature& aCreature, Creature& bCreature) {
 		return false; // return false
 	}
 }
+// What does the constructor initialize? the name, health, damage
+// In this line, what object is receiving damage? other.takeDamage(damage); the other creature is taking the damage
+// Why do we check whether health < 0? health should not go below 0
+// What is the default behavior of specialMove()? it just prints out that the creature has no special move
+// Why is it useful for the base class to have a default version? it allows us to call specialMove() on any creature without having to worry about whether it has a special move or not
+
+
