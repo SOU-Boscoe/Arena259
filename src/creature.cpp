@@ -116,6 +116,10 @@ void Creature::attack(Creature& target) {
 	incDamageDealt(damage);
 }
 
+void Creature::specialMove(Creature& other){
+	std::cout << name << " has no special move.\n";
+}
+
 
 
 // Validation

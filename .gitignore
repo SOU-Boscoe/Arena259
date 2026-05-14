@@ -1,7 +1,8 @@
-.gitignore
 /env
 arena
 main
 Makefile
 test1
+Arena259/src/creatures/abominablemudman.cppy
+Arena259/src/creatures/abominablemudman.h
 *.exe

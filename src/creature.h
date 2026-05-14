@@ -13,7 +13,7 @@
 
 class Creature
 {
-private:
+protected:
 	static int creatureCount; // will be increased in the constructor
 	static const int MIN_HEALTH = 80; // ranges for valid health and damage
 	static const int MAX_HEALTH = 120;
@@ -54,8 +54,9 @@ public:
 	void incDamageDealt(const int&); // increase damage dealt stat
 
 	// Damage other creatures
-	void attack(Creature& target); // decreases health of target 
+	virtual void attack(Creature& target); // decreases health of target 
 	void takeDamage(int amount); // decrease this creature's health by amount - defense
+	virtual void specialMove(Creature& other);
 
 	// Validation checks
 	static bool validate(Creature&); // returns true if health and damage are in valid
