@@ -18,13 +18,14 @@ class Creature
 {
 
 // Created private member variables including one static variable for use across all creature class members.
-private:
+protected:
     std::string name;
     int maxHealth;
     int health;
     int damage;
     int defense;
     int healing;
+    virtual void specialMove(Creature& other);
     static int creatureCount;
 
 // Added public member methods methods.
@@ -54,6 +55,7 @@ public:
 
     // Validates that both creatures have valid stats for battle.
     static bool validateBattle(const Creature &a, const Creature &b);
+
 };
 
 #endif
