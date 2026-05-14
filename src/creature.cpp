@@ -1,11 +1,10 @@
-
-
 // c++ libraries
 #include <string>
 #include <iostream>
 
 // header files
 #include "creature.h"
+#include "utils.h"
 
 int Creature::creatureCount = 0;
 const int Creature::MIN_HEALTH;
