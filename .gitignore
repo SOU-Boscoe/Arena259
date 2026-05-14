@@ -3,6 +3,6 @@ arena
 main
 Makefile
 test1
-src/creatures/abominablemudman.cppy
+src/creatures/abominablemudman.cpp
 src/creatures/abominablemudman.h
 *.exe
