@@ -1,7 +1,16 @@
+<<<<<<< HEAD
+=======
+.gitignore
+>>>>>>> 21cb0b3 (fixing issues because of sync)
 /env
 arena
 main
 Makefile
 test1
 *.exe
+<<<<<<< HEAD
 .vscode/
+=======
+test.cpp
+/test
+>>>>>>> 21cb0b3 (fixing issues because of sync)
