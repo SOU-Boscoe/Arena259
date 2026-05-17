@@ -25,7 +25,6 @@ protected:
     int damage;
     int defense;
     int healing;
-    virtual void specialMove(Creature& other);
     static int creatureCount;
 
 // Added public member methods methods.
