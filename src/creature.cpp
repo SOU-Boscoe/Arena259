@@ -37,6 +37,10 @@ void Creature::attack(Creature &other)
     other.takeDamage(damage); // Directs attacks against opponents in areana.
 }
 
+void Creature::specialMove(Creature& other){
+    std::cout << name << " has no special move." << std::endl;
+}
+
 // Checks if creature is alive.
 bool Creature::isAlive() const
 {
