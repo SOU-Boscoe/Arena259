@@ -1,14 +1,16 @@
 #include <iostream>
 #include "devil.h"
 
-LordDevilious::LordDevilious() // Constructor
+LordDevilious::LordDevilious()
     : Creature("Lord Devilious the 666", 120, 10)
 {
 }
 
-void LordDevilious::specialMove(Creature& other) // Overrides the base class's specialMove function
+void LordDevilious::specialMove(Creature& other)
 {
-    std::cout << getName() << " uses Hellfire Drain!" << std::endl;
+    std::cout << getName()
+              << " uses Hellfire Drain!"
+              << std::endl;
 
     other.takeDamage(20);
 

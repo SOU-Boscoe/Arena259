@@ -8,7 +8,7 @@ class LordDevilious : public Creature
 public:
     LordDevilious();
 
-    void specialMove(Creature& other) override; 
+    void specialMove(Creature& other);
 };
 
 #endif
