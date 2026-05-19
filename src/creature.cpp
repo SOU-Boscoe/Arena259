@@ -6,6 +6,7 @@
 #include "creature.h"
 #include "utils.h"
 
+// constant values
 int Creature::creatureCount = 0;
 const int Creature::MIN_HEALTH;
 const int Creature::MAX_HEALTH;

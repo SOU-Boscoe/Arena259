@@ -11,6 +11,7 @@
 // also, leaving implementation in .cpp file is better so we don't have to worry what order we implement functions in (we can call methods within methods without worrying about compiler errors)
 
 
+// added line to force commit
 class Creature
 {
 private:
