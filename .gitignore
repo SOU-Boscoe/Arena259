@@ -1,7 +1,8 @@
-.gitignore
 /env
 arena
 main
 Makefile
 test1
 *.exe
+.vscode/
+test.cpp
