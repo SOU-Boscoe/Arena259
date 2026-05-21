@@ -9,7 +9,7 @@ class LordDevilious : public Creature
 public:
     LordDevilious();
 
-    void specialMove(Creature& other); // override the base class special move with a unique one for this creature
+    void specialMove(Creature& other) override; // override the base class special move with a unique one for this creature
 };
 
 #endif

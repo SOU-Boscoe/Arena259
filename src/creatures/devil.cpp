@@ -19,3 +19,5 @@ void LordDevilious::specialMove(Creature& other) // override the base class spec
               << " drains dark energy from the target!"
               << std::endl;
 }
+
+// Hope everything works!
