@@ -67,6 +67,10 @@ public:
 							  // use before starting a battle between the two.
 							  // returns false if either are invalid
 							  // true if both are valid.
+
+	virtual ~Creature() {
+		std::cout << name << " was destroyed by the destructor" << std::endl;
+	}
 };
 
 #endif
