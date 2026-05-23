@@ -36,6 +36,8 @@ public:
 	Creature(std::string name, int health, int damage); 
 	Creature(std::string name, int health, int damage, int defense);
 
+	virtual ~Creature() = default;
+
 	// Getters
 	std::string getName() const; // returns the name variable
 	int getHealth() const; // returns the health variable
