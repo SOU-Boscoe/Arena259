@@ -68,5 +68,5 @@ public:
 							  // returns false if either are invalid
 							  // true if both are valid.
 };
-
+ 
 #endif
