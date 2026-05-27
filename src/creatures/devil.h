@@ -8,6 +8,7 @@ class LordDevilious : public Creature
 {
 public:
     LordDevilious();
+    ~LordDevilious() = default;
 
     void specialMove(Creature& other); // override the base class special move with a unique one for this creature
 };
