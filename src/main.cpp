@@ -1,7 +1,6 @@
 #include "arena.h"
 #include "creature.h"
-#include "./creatures/sumo_sally.h"
-#include "./creatures/giantleech.h"
+#include "creatures.h"
 
 int main()
 {
