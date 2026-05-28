@@ -1,7 +1,7 @@
 
 #ifndef BANSHEE_H
 #define BANSHEE_H
-#include "creature.h"
+#include "../creature.h"
 
 class Banshee : public Creature
 {

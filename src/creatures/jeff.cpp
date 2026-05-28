@@ -1,16 +1,13 @@
-#include <string>
-#include <iostream>
 #include <chrono>
 #include <thread>
 
 // header files
 #include "jeff.h"
-#include "creature.h"
 
 int timesUsed = 0;
 
 // Constructor
-Jeff::Jeff(std::string name, int health, int damage): Creature("Jeff", 120, 5){}
+Jeff::Jeff(): Creature("Jeff", 120, 5){}
 void Jeff::specialMove(Creature& other){
 	if(timesUsed == 0){
 		timesUsed++;
