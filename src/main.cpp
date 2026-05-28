@@ -1,16 +1,18 @@
 #include "arena.h"
 #include "creature.h"
-#include "./creatures/sumo_sally.h"
-#include "./creatures/giantleech.h"
+#include "./creatures/devil.h"
+#include "./creatures/darkjellyfish.h"
+
+// C++ libraries
+#include <memory>
 
 int main()
 {
-    Creature c1(make_sumo_sally());
-    Creature c2(makeGiantleech());
-    
-    std::cout << "Total creatures created: " << Creature::getCreatureCount() << std::endl; // print out the number of creatures in the arena
+	Arena a;
+	a.addFighter(std::make_unique<LordDevilious>());
+	a.addFighter(std::make_unique<DarkJellyfish>());
 
-    Arena::battle(c1, c2);
+	a.battle(0, 1);
 
-    return 0;
+	return 0;
 }
