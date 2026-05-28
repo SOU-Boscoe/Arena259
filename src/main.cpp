@@ -3,14 +3,24 @@
 #include "./creatures/sumo_sally.h"
 #include "./creatures/giantleech.h"
 
+#include <memory>
+
+using namespace std;
+
 int main()
 {
-    Creature c1(make_sumo_sally());
-    Creature c2(makeGiantleech());
-    
-    std::cout << "Total creatures created: " << Creature::getCreatureCount() << std::endl; // print out the number of creatures in the arena
+Arena arena;
 
-    Arena::battle(c1, c2);
+auto fighter1 =
+    make_unique<Creature>(make_sumo_sally());
 
-    return 0;
+auto fighter2 =
+    make_unique<Creature>(makeGiantleech());
+
+arena.addFighter(std::move(fighter1));
+arena.addFighter(std::move(fighter2));
+
+arena.battle(0, 1);
+
+return 0;
 }
