@@ -6,7 +6,7 @@ Jumpingspider::Jumpingspider()
 }
 
 void Jumpingspider::specialMove(Creature& other){
-        int web = 25 +;
+        int web = 25;
 
         std::cout << this -> getName()
                 << " uses web on "
