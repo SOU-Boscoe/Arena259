@@ -2,6 +2,8 @@
 #define ARENA_H
 
 #include "creature.h"
+#include<memory>
+#include<vector>
 
 // added a battle statistics function, good for debugging and generally fun
 
@@ -11,6 +13,7 @@ class Arena
 	
 	public:
 		static void battle(Creature &a, Creature &b);
+		static void tournament(std::vector<std::unique_ptr<Creature>>& fighters);
 		static void printStats(Creature& a, Creature& b, int turns); // pass in battling creatures, total turns
 };
 

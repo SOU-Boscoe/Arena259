@@ -1,6 +1,10 @@
+#include "ringmasterhawk.h"
+#include "../rng.h"
+
+RingmasterHawk::RingmasterHawk() : Creature("Ringmaster Hawk", 80, 20){}
 
 void RingmasterHawk::specialMove(Creature& other) {
-    int randomDamage = ArenaRand::randomValue(7, 45); // Random damage between 7 and 45
+    int randomDamage = RNG::randomValue(7, 45); // Random damage between 7 and 45
 
     std::cout << getName() << " calls for a daring act against " << other.getName() << "!" << std::endl;
 

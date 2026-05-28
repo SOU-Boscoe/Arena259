@@ -61,7 +61,6 @@ public:
 	void takeDamage(int amount); // decrease this creature's health by amount - defense
 	
 	virtual void specialMove(Creature& other);
-	virtual ~Creature() = default;
 
 	// Validation checks
 	static bool validate(Creature&); // returns true if health and damage are in valid
