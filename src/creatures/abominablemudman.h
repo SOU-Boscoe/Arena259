@@ -12,7 +12,7 @@ class AbominableMudman : public Creature{
     public:
         AbominableMudman();
 
-        ~AbominableMudman() = default;
+        ~AbominableMudman() override {std::cout << "Mudman destroyed\n";}
 
         void attack(Creature& other) override; // overloaded base function, deals 8 damage and calls dealPercentDmg to determine if extra damage is dealt
 

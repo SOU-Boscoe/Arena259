@@ -36,7 +36,7 @@ public:
 	Creature(std::string name, int health, int damage); 
 	Creature(std::string name, int health, int damage, int defense);
 
-	virtual ~Creature() = default;
+	virtual ~Creature(){std::cout << "Creature destroyed\n";};
 
 	// Getters
 	std::string getName() const; // returns the name variable

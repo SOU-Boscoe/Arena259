@@ -1,7 +1,7 @@
 #include "abominablemudman.h"
 
 AbominableMudman::AbominableMudman()
-    : Creature("Abominable Mudman", 120, 9){}
+    : Creature("Abominable Mudman", 120, 9){std::cout << "Mudman constructed\n";}
 
 void AbominableMudman::attack(Creature& target) {
     atk_count++;

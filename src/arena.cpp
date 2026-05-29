@@ -4,6 +4,14 @@
 #include "arena.h"
 #include "rng.h"
 
+Arena::Arena(){
+    std::vector<std::unique_ptr<Creature>> newfighters;
+    fighters = std::move(newfighters);
+}
+Arena::Arena(std::vector<std::unique_ptr<Creature>>& newfighters){
+    fighters = std::move(newfighters);
+}
+
 void Arena::battle(Creature &temp1, Creature &temp2)
 {
     std::random_device rd;
@@ -89,7 +97,7 @@ void Arena::battle(Creature &temp1, Creature &temp2)
     printStats(a, b, turn);
 }
 
-void Arena::tournament(std::vector<std::unique_ptr<Creature>>& fighters) {
+void Arena::tournament() {
 
     std::random_device rd;
     std::mt19937 gen(rd());
@@ -182,4 +190,13 @@ void Arena::printStats(Creature& a, Creature& b, int turns) {
     std::cout << b.getName() << " Health: " << b.getHealth() << "/" << b.getStartHealth() << std::endl;
     std::cout << b.getName() << " Damage Dealt: " << b.getDamageDealt() << std::endl;
 
+}
+
+void Arena::addFighter(std::unique_ptr<Creature> fighter){
+    fighters.push_back(std::move(fighter));
+    std::cout << "Arena now has " << fighters.size() << " fighters\n";
+}
+
+void Arena::indexBattle(int first, int second){
+    battle(*fighters[first], *fighters[second]);
 }
