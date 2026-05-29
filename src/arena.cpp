@@ -32,30 +32,46 @@ void Arena::printTurn(int turn) {
 }
 
 bool Arena::takeTurn(Creature& acting, Creature& target) {
-    if (RNG::randomValue(1, acting.specialChance()) == acting.specialChance()) {
+    if (RNG::randomValue(1, 100) <= acting.specialChance()) {
         acting.specialMove(target);
         std::cout << acting.getName() << " uses SPECIAL MOVE!\n";
     }
-    else { acting.attack(target); }
+    else {
+        acting.attack(target);
+        std::cout << colorMe(acting.getName(), Color::CYAN) << " attacks "
+                  << colorMe(target.getName(), Color::RED) << " for "
+                  << colorMe(std::to_string(acting.getDamage()), Color::YELLOW) << " damage! "
+                  << colorMe("(" + std::to_string(target.getHealth()) + " HP remaining)", Color::WHITE) << "\n";
+    }
     return target.isAlive();
 }
 
-bool Arena::checkPulse(const Creature c) {
-    if (&c == nullptr) { return false; };
-    return c.isAlive();
+
+void Arena::fightPair(Creature& a, Creature& b) {
+    Creature* first  = (RNG::flipCoin() == 1) ? &a : &b;
+    Creature* second = (first == &a) ? &b : &a;
+
+    std::cout << first->getName() << " vs " << second->getName() << "\n";
+
+    hasWinner = false;
+    int turn = 1;
+    while (!hasWinner) {
+        printTurn(turn);
+        if (!takeTurn(*first, *second)) { hasWinner = true; break; }
+        if (!takeTurn(*second, *first)) { hasWinner = true; break; }
+        turn++;
+    }
 }
 
-bool Arena::validateBattle(Creatures creatures) {
+bool Arena::validateBattle(Creatures& creatures) {
     std::string error = "The stats of the creatures are invalid, so the battle cannot take place.";
-    if (creatures.size() < 2) {
         for (const auto& c : creatures) {
             if (!Creature::isValid(*c)) {
                 std::cerr << error << std::endl;
                 return false;
             }
         }
-        return true;
-    }
+    return true;
 }
 
 void Arena::battleRoyale()
@@ -73,7 +89,7 @@ void Arena::battleRoyale()
         printTurn(turn);
         for (auto& c : creatures)
         {
-            if (!checkPulse(*c)) continue;
+            if (!c->isAlive()) continue;
             std::cout << "\n>> " << colorMe(c->getName() + "'s", Color::CYAN) << " turn:\n";
             Creature& target = c->chooseTarget(creatures);
             bool survived = takeTurn(*c, target);
@@ -86,7 +102,7 @@ void Arena::battleRoyale()
         still_alive.clear();
         for (auto& c: creatures)
         {
-            if (checkPulse(*c)) { still_alive.push_back(&(*c)); }
+            if (c->isAlive()) { still_alive.push_back(&(*c)); }
         }
         if (still_alive.size() == 1) {
             printWinner(*still_alive[0]);
@@ -97,31 +113,10 @@ void Arena::battleRoyale()
 
 void Arena::battle()
 {
-    auto& a = creatures[0];
-    auto& b = creatures[1];
-
-    if (RNG::flipCoin() == 1) { std::swap(a, b); }
-
-    if(!Arena::validateBattle(creatures)){ return; }
-
-    std::cout << a->getName() << " vs " << b->getName() << std::endl;
-
-    hasWinner = false;
-
-    int turn = 1;
-
-    while (!hasWinner){
-
-        {
-            printTurn(turn);            
-            if (!takeTurn(*a, *b)) { hasWinner = true; break; }
-            if (!takeTurn(*b, *a)) { hasWinner = true; break; }
-
-            turn++;
-        }
-    }
-
-    // printStats(a, b, turn);
+    if (!Arena::validateBattle(creatures)) { return; }
+    fightPair(*creatures[0], *creatures[1]);
+    Creature& winner = creatures[0]->isAlive() ? *creatures[0] : *creatures[1];
+    printWinner(winner);
 }
 
 void Arena::tournament() {
@@ -158,15 +153,15 @@ void Arena::tournament() {
             int c1Health = c1.getHealth();
             int c2Health = c2.getHealth();
 
-            battle();
+            fightPair(c1, c2);
 
             if (c1.isAlive()) {
-
+                printWinner(c1);
                 c1.setHealth(c1Health);
                 winners.push_back(std::move(creatures[i]));
             }
             else {
-
+                printWinner(c2);
                 c2.setHealth(c2Health);
                 winners.push_back(std::move(creatures[i + 1]));
             }
@@ -183,8 +178,8 @@ void Arena::tournament() {
     std::cout << "---------------------------------\n\n";
 
     std::cout << "- The tournament champion is: "
-              << creatures[0]->getName()
-              << "! -\n";
+              << creatures[0]->getName() << "! -\n";
+    printWinner(*creatures[0]);
 }
 
 // void Arena::printStats(Creature& a, Creature& b, int turns) {

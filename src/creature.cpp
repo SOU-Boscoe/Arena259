@@ -123,15 +123,6 @@ void Creature::attack(Creature& target) {
 	incDamageDealt(damage);
 }
 
-// inverse linear interpolation formula
-int Creature::specialChance() {
-	int numerator = damage-MIN_DAMAGE;
-	int denominator = MAX_DAMAGE-MIN_DAMAGE;
-// Max % - Min %
-	int coeff = 25-10;  
-	return (numerator/denominator)*coeff;
-}
-
 void Creature::specialMove(Creature& target){
 	std::cout << name << " has no special move." << std::endl;
 }
