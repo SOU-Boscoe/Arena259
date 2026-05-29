@@ -1,100 +1,132 @@
 #include <iostream>
 #include <iomanip>
 #include <algorithm>
+#include "utils.h"
 #include "arena.h"
 #include "rng.h"
 
-void Arena::battle(Creature &temp1, Creature &temp2)
+// Removes conditional/duplicate print statements when a winner is decided
+void Arena::printWinner(Creature& winner) {
+    std::cout << Color::YELLOW << "\n=============================\n" << Color::RESET;
+    std::cout << colorMe(winner.getName(), Color::GREEN) << " wins!\n";
+    std::cout << colorMe(winner.getName(), Color::GREEN) << " has "
+              << colorMe(std::to_string(winner.getHealth()), Color::GREEN) << " HP remaining.\n";
+    std::cout << Color::YELLOW << "=============================\n" << Color::RESET;
+}
+
+void Arena::printBegin() {
+    std::cout << Color::YELLOW << "=============================\n";
+    std::cout << "        ARENA BATTLE        \n";
+    std::cout << "=============================\n" << Color::RESET;
+    for (auto& c : creatures) {
+        std::cout << "  " << colorMe(c->getName(), Color::CYAN)
+                  << " (" << colorMe(std::to_string(c->getHealth()), Color::GREEN) << " HP)\n";
+    }
+    std::cout << Color::YELLOW << "=============================\n" << Color::RESET;
+}
+
+void Arena::printTurn(int turn) {
+    std::cout << Color::BLUE << "\n-----------------------------\n";
+    std::cout << "Turn " << turn << "\n";
+    std::cout << "-----------------------------\n" << Color::RESET;
+}
+
+bool Arena::takeTurn(Creature& acting, Creature& target) {
+    if (RNG::randomValue(1, acting.specialChance()) == acting.specialChance()) {
+        acting.specialMove(target);
+        std::cout << acting.getName() << " uses SPECIAL MOVE!\n";
+    }
+    else { acting.attack(target); }
+    return target.isAlive();
+}
+
+bool Arena::checkPulse(const Creature c) {
+    if (&c == nullptr) { return false; };
+    return c.isAlive();
+}
+
+bool Arena::validateBattle(Creatures creatures) {
+    std::string error = "The stats of the creatures are invalid, so the battle cannot take place.";
+    if (creatures.size() < 2) {
+        for (const auto& c : creatures) {
+            if (!Creature::isValid(*c)) {
+                std::cerr << error << std::endl;
+                return false;
+            }
+        }
+        return true;
+    }
+}
+
+void Arena::battleRoyale()
 {
-    std::random_device rd;
-    std::mt19937 gen(rd());
+    int turn = 1;
+// must use a non-owning structure because unique_ptr is not copyable.
+    std::vector<Creature*> still_alive;
 
-    Creature* first;
-    Creature* second;
+    printBegin();
 
-    std::uniform_int_distribution<> specialTurnDist(3, 6);
-
-    int c1SpecialTurn = specialTurnDist(gen);
-    int c2SpecialTurn = specialTurnDist(gen);
-
-    bool c1UsedSpecial = false;
-    bool c2UsedSpecial = false;
-
-    if (RNG::flipCoin() == 1) {
-        first = &temp1;
-        second = &temp2;
-    } else {
-        first = &temp2;
-        second = &temp1;
-    }
-
-    Creature& a = *first;
-    Creature& b = *second;
-
-    if(!Creature::validateBattle(a, b)){
-        return;
-    }
+    hasWinner = false;
     
-    std::cout << a.getName() << " vs " << b.getName() << std::endl;
+    while (!hasWinner)
+    {
+        printTurn(turn);
+        for (auto& c : creatures)
+        {
+            if (!checkPulse(*c)) continue;
+            std::cout << "\n>> " << colorMe(c->getName() + "'s", Color::CYAN) << " turn:\n";
+            Creature& target = c->chooseTarget(creatures);
+            bool survived = takeTurn(*c, target);
+            if (!survived) {
+                std::cout << colorMe("** " + target.getName() + " has been defeated! **", Color::RED) << "\n";
+            }
+        }
+        turn++;
+
+        still_alive.clear();
+        for (auto& c: creatures)
+        {
+            if (checkPulse(*c)) { still_alive.push_back(&(*c)); }
+        }
+        if (still_alive.size() == 1) {
+            printWinner(*still_alive[0]);
+            hasWinner = true;
+        }
+    }
+}
+
+void Arena::battle()
+{
+    auto& a = creatures[0];
+    auto& b = creatures[1];
+
+    if (RNG::flipCoin() == 1) { std::swap(a, b); }
+
+    if(!Arena::validateBattle(creatures)){ return; }
+
+    std::cout << a->getName() << " vs " << b->getName() << std::endl;
+
+    hasWinner = false;
 
     int turn = 1;
 
-    while (a.isAlive() && b.isAlive()){
-    
+    while (!hasWinner){
+
         {
-            std::cout << "\n-----------------------------\n";
-            std::cout << "Turn " << turn << std::endl;  
-            std::cout << "-----------------------------\n";
+            printTurn(turn);            
+            if (!takeTurn(*a, *b)) { hasWinner = true; break; }
+            if (!takeTurn(*b, *a)) { hasWinner = true; break; }
 
-
-            std::cout << std::left
-                      << std::setw(10) << a.getName() << " HP: " << a.getHealth() << "\n"
-                      << std::setw(10) << b.getName() << " HP: " << b.getHealth() << "\n";
-
-
-            if (!c1UsedSpecial && turn == c1SpecialTurn) {
-
-                std::cout << a.getName()
-                          << " uses SPECIAL MOVE!\n";
-
-                a.specialMove(b);
-                c1UsedSpecial = true;
-            }
-            else {
-                std::cout << a.getName() << " attacks!" << std::endl;
-                a.attack(b);
-                std::cout << b.getName() << " health: " << b.getHealth() << std::endl;
-            }
-
-            if (!c2UsedSpecial && turn == c2SpecialTurn) {
-
-                std::cout << b.getName()
-                          << " uses SPECIAL MOVE!\n";
-
-                b.specialMove(a);
-                c2UsedSpecial = true;
-            }
-            else{
-                std::cout << b.getName() << " attacks!" << std::endl;
-                b.attack(a);
-                std::cout << a.getName() << " health: " << a.getHealth() << std::endl;
-            }
             turn++;
         }
     }
 
-    // Ezra's custom battle statistics code    
-    // print out battle stats
-    std::cout << std::endl;
-    printStats(a, b, turn);
+    // printStats(a, b, turn);
 }
 
-void Arena::tournament(std::vector<std::unique_ptr<Creature>>& fighters) {
+void Arena::tournament() {
 
-    std::random_device rd;
-    std::mt19937 gen(rd());
-
-    std::shuffle(fighters.begin(), fighters.end(), gen);
+    std::shuffle(creatures.begin(), creatures.end(), RNG::gen);
 
     std::cout << "---------------------------------\n";
     std::cout << "--- The tournament has begun! ---\n";
@@ -102,47 +134,47 @@ void Arena::tournament(std::vector<std::unique_ptr<Creature>>& fighters) {
 
     int heat = 1;
 
-    while (fighters.size() > 1) {
+    while (creatures.size() > 1) {
         std::cout << "========== HEAT "
                   << heat
                   << " ==========\n\n";
 
-        std::vector<std::unique_ptr<Creature>> winners;
+        Creatures winners;
 
-        for (size_t i = 0; i < fighters.size(); i += 2) {
-            // Odd number of fighters automatic advancement
-            if (i + 1 >= fighters.size()) {
+        for (size_t i = 0; i < creatures.size(); i += 2) {
+            // Odd number of creatures automatic advancement
+            if (i + 1 >= creatures.size()) {
 
-                std::cout << fighters[i]->getName()
+                std::cout << creatures[i]->getName()
                           << " advances automatically!\n\n";
 
-                winners.push_back(std::move(fighters[i]));
+                winners.push_back(std::move(creatures[i]));
                 continue;
             }
 
-            Creature& c1 = *fighters[i];
-            Creature& c2 = *fighters[i + 1];
+            Creature& c1 = *creatures[i];
+            Creature& c2 = *creatures[i + 1];
 
             int c1Health = c1.getHealth();
             int c2Health = c2.getHealth();
 
-            battle(c1, c2);
+            battle();
 
             if (c1.isAlive()) {
 
                 c1.setHealth(c1Health);
-                winners.push_back(std::move(fighters[i]));
+                winners.push_back(std::move(creatures[i]));
             }
             else {
 
                 c2.setHealth(c2Health);
-                winners.push_back(std::move(fighters[i + 1]));
+                winners.push_back(std::move(creatures[i + 1]));
             }
 
             std::cout << "---------------------------------\n\n";
         }
 
-        fighters = std::move(winners);
+        creatures = std::move(winners);
         heat++;
     }
 
@@ -151,35 +183,35 @@ void Arena::tournament(std::vector<std::unique_ptr<Creature>>& fighters) {
     std::cout << "---------------------------------\n\n";
 
     std::cout << "- The tournament champion is: "
-              << fighters[0]->getName()
+              << creatures[0]->getName()
               << "! -\n";
 }
 
-void Arena::printStats(Creature& a, Creature& b, int turns) {
+// void Arena::printStats(Creature& a, Creature& b, int turns) {
 
-    // print winner
-    std::cout << "Battle finished, the winner is ";
-    if (a.isAlive())
-    {
-        std::cout << a.getName() << "!" << std::endl;
-    }
-    else
-    {
-        std::cout << b.getName() << "!" << std::endl;
-    }
+//     // print winner
+//     std::cout << "Battle finished, the winner is ";
+//     if (a->isAlive())
+//     {
+//         std::cout << a->getName() << "!" << std::endl;
+//     }
+//     else
+//     {
+//         std::cout << b->getName() << "!" << std::endl;
+//     }
 
-    // arena stats
-    std::cout << "Total turns: " << turns << std::endl;
-    std::cout << "Total Damage Dealt: " << a.getDamageDealt() + b.getDamageDealt() << std::endl;
-    std::cout << std::endl;
+//     // arena stats
+//     std::cout << "Total turns: " << turns << std::endl;
+//     std::cout << "Total Damage Dealt: " << a->getDamageDealt() + b->getDamageDealt() << std::endl;
+//     std::cout << std::endl;
 
-    // a creature stats
-    std::cout << a.getName() << " Health: " << a.getHealth() << "/" << a.getStartHealth() << std::endl;
-    std::cout << a.getName() << " Damage Dealt: " << a.getDamageDealt() << std::endl;
-    std::cout << std::endl;
+//     // a creature stats
+//     std::cout << a->getName() << " Health: " << a->getHealth() << "/" << a->getStartHealth() << std::endl;
+//     std::cout << a->getName() << " Damage Dealt: " << a->getDamageDealt() << std::endl;
+//     std::cout << std::endl;
 
-    // b creature stats
-    std::cout << b.getName() << " Health: " << b.getHealth() << "/" << b.getStartHealth() << std::endl;
-    std::cout << b.getName() << " Damage Dealt: " << b.getDamageDealt() << std::endl;
+//     // b creature stats
+//     std::cout << b->getName() << " Health: " << b->getHealth() << "/" << b->getStartHealth() << std::endl;
+//     std::cout << b->getName() << " Damage Dealt: " << b->getDamageDealt() << std::endl;
 
-}
+// }

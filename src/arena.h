@@ -7,14 +7,26 @@
 
 // added a battle statistics function, good for debugging and generally fun
 
+using Creatures = std::vector<std::unique_ptr<Creature>>;
+
 class Arena
 {
-	private:
-	
-	public:
-		static void battle(Creature &a, Creature &b);
-		static void tournament(std::vector<std::unique_ptr<Creature>>& fighters);
-		static void printStats(Creature& a, Creature& b, int turns); // pass in battling creatures, total turns
+public:
+    Arena(Creatures creatures) : creatures(std::move(creatures)) {};
+    void battle();
+	void battleRoyale();
+	void tournament();
+    void printBegin();
+    void printTurn(int turn);
+    void printWinner(Creature& winner);
+	bool validateBattle(Creatures creature);
+    bool takeTurn(Creature& acting, Creature& target); // return target->isAlive()
+
+private:
+    bool hasWinner = false;
+    bool checkPulse(const Creature c);
+    Creatures defeated;
+    Creatures creatures;
 };
 
 #endif

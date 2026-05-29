@@ -1,9 +1,12 @@
 // c++ libraries
 #include <string>
 #include <iostream>
+#include <algorithm>
+#include <vector>
 
 // header files
 #include "creature.h"
+#include "rng.h"
 #include "utils.h"
 
 // constant values
@@ -59,6 +62,10 @@ int Creature::getDamageDealt() const {
 	return damageDealt;
 }
 
+int Creature::getDefense() const {
+	return defense;
+}
+
 bool Creature::isAlive() const {
 	return health > 0; // return true if health > 0
 }
@@ -69,11 +76,11 @@ int Creature::getCreatureCount() {
 
 
 // Setters
-void Creature::setName(const std::string& newName) {
+void Creature::setName(std::string newName) {
 	name = newName; // update name, no checks needed
 }
 
-void Creature::setHealth(const int& newHealth) {
+void Creature::setHealth(int newHealth) {
 	health = newHealth; // update health
 	if (getHealth() < 0) { // ensure that health stays non-negative
 		health = 0;
@@ -83,7 +90,7 @@ void Creature::setHealth(const int& newHealth) {
 	}
 }
 
-void Creature::setDamage(const int& newDamage) {
+void Creature::setDamage(int newDamage) {
 	damage = newDamage; // update damage
 	if (getDamage() < 0) { // don't allow damage to be negative
 		damage = 0;
@@ -91,15 +98,15 @@ void Creature::setDamage(const int& newDamage) {
 }
 
 // Incrementers
-void Creature::heal(const int& increase) {
+void Creature::heal(int increase) {
 	setHealth(getHealth() + increase); // set the health + increase
 }
 
-void Creature::incDamage(const int& increase) {
+void Creature::incDamage(int increase) {
 	setDamage(getDamage() + increase); // just set the damage + increase
 }
 
-void Creature::incDamageDealt(const int& increase) {
+void Creature::incDamageDealt(int increase) {
 	damageDealt += increase;
 }
 
@@ -116,34 +123,64 @@ void Creature::attack(Creature& target) {
 	incDamageDealt(damage);
 }
 
-void Creature::specialMove(Creature& other){
+// inverse linear interpolation formula
+int Creature::specialChance() {
+	int numerator = damage-MIN_DAMAGE;
+	int denominator = MAX_DAMAGE-MIN_DAMAGE;
+// Max % - Min %
+	int coeff = 25-10;  
+	return (numerator/denominator)*coeff;
+}
+
+void Creature::specialMove(Creature& target){
 	std::cout << name << " has no special move." << std::endl;
 }
 
+Creature& Creature::chooseTarget(const Creatures& creatures, MODE m) {
+    std::vector<Creature*> targets;
+    for (const auto& c : creatures) {
+        if (c.get() != this && c->isAlive()) targets.push_back(c.get());
+    }
+    if (targets.empty()) return *this;
 
-// Validation
-bool Creature::validate(Creature& creatureCheck) {
-	if (creatureCheck.getHealth() < MIN_HEALTH || creatureCheck.getHealth() > MAX_HEALTH) { // check health is in a valid range
-		
-		std::cerr << "Error: " << creatureCheck.getName() << " has invalid health (" << creatureCheck.getHealth() 
-		<< " HP). Health must be between " << MIN_HEALTH << " and " << MAX_HEALTH << std::endl; // print out an error 
-		return false; // failed to validate
-	}
-	if (creatureCheck.getDamage() < MIN_DAMAGE || creatureCheck.getDamage() > MAX_DAMAGE) {
-		std::cerr << "Error: " << creatureCheck.getName() << " has invalid damage (" << creatureCheck.getDamage() 
-		<<  " DMG). Damage must be between " << MIN_DAMAGE << " and " << MAX_DAMAGE << std::endl;
-		return false; // failed to validate
-	}
-	return true; // validation passed
+    auto cmp = [](auto fn) {
+        return [fn](Creature* a, Creature* b){ return fn(a) < fn(b); };
+    };
+
+    std::vector<Creature*>::iterator it;
+    switch (m) {
+        case MODE::LOW_CUR_HP:   it = std::min_element(targets.begin(), targets.end(), cmp([](Creature* c){ return c->getHealth();      })); break;
+        case MODE::HIGH_CUR_HP:  it = std::max_element(targets.begin(), targets.end(), cmp([](Creature* c){ return c->getHealth();      })); break;
+        case MODE::LOW_MAX_HP:   it = std::min_element(targets.begin(), targets.end(), cmp([](Creature* c){ return c->getStartHealth(); })); break;
+        case MODE::HIGH_MAX_HP:  it = std::max_element(targets.begin(), targets.end(), cmp([](Creature* c){ return c->getStartHealth(); })); break;
+        case MODE::LOW_ATTACK:   it = std::min_element(targets.begin(), targets.end(), cmp([](Creature* c){ return c->getDamage();      })); break;
+        case MODE::HIGH_ATTACK:  it = std::max_element(targets.begin(), targets.end(), cmp([](Creature* c){ return c->getDamage();      })); break;
+        case MODE::LOW_DEFENSE:  it = std::min_element(targets.begin(), targets.end(), cmp([](Creature* c){ return c->getDefense();     })); break;
+        case MODE::HIGH_DEFENSE: it = std::max_element(targets.begin(), targets.end(), cmp([](Creature* c){ return c->getDefense();     })); break;
+        default: return *targets[RNG::randomValue(0, targets.size() - 1)];
+    }
+    return **it;
 }
 
-// attempts to validate two creatures, returns true if they have valid stats, false otherwise
-bool Creature::validateBattle(Creature& aCreature, Creature& bCreature) {
-	if (validate(aCreature) && validate(bCreature)) { // if both creatures are valid, return true
-		return true;
-	}	
-	else { // if one of them aren't
-		std::cerr << "The stats of the creatures are invalid, so the battle cannot take place." << std::endl; // print an error
-		return false; // return false
+// Validation
+bool Creature::isValid(Creature& c) {
+	// test health
+	if (c.getHealth() < MIN_HEALTH || c.getHealth() > MAX_HEALTH) { 
+		
+	// health error
+		std::cerr << "Error: " << c.getName() << " has invalid health (" << c.getHealth() 
+		<< " HP). Health must be between " << MIN_HEALTH << " and " << MAX_HEALTH << std::endl;
+		return false;
 	}
+
+	//test damage
+	if (c.getDamage() < MIN_DAMAGE || c.getDamage() > MAX_DAMAGE) {
+		
+	// damage error
+		std::cerr << "Error: " << c.getName() << " has invalid damage (" << c.getDamage() 
+		<<  " DMG). Damage must be between " << MIN_DAMAGE << " and " << MAX_DAMAGE << std::endl;
+		return false; 
+	}
+	// everything is good!
+	return true;
 }
