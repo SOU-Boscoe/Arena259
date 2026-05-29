@@ -14,8 +14,8 @@ int main()
     arena.indexBattle(0,1);
 
     // Because of inheritance hieherarchy, Mudman destructor is called first, then because Mudman is also a Creature,
-    // Creature destructor is called on mudman, then because spider has to output for its destructor it is still called,
-    // and then the Creature destructor is called and output on spider.
+    // Creature destructor is called on mudman, spider has no output for its destructor when called,
+    // so then the Creature destructor is called and outputs for spider.
 
     return 0;
 }
