@@ -4,12 +4,18 @@
 
 int main()
 {
-    Creature c1(make_sumo_sally());
-    Creature c2(makeGiantleech());
-    
-    std::cout << "Total creatures created: " << Creature::getCreatureCount() << std::endl; // print out the number of creatures in the arena
+    Arena arena = Arena();
 
-    Arena::battle(c1, c2);
+    arena.addFighter(std::make_unique<AbominableMudman>());
+    auto spider = std::make_unique<Jumpingspider>();
+    arena.addFighter(std::move(spider));
+
+
+    arena.indexBattle(0,1);
+
+    // Because of inheritance hieherarchy, Mudman destructor is called first, then because Mudman is also a Creature,
+    // Creature destructor is called on mudman, then because spider has to output for its destructor it is still called,
+    // and then the Creature destructor is called and output on spider.
 
     return 0;
 }

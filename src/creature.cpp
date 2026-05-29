@@ -22,7 +22,7 @@ Creature::Creature(std::string name, int health, int damage)
 	, damage(damage)
 	, startDamage(damage)
 	, defense(0)
-	{ creatureCount++; }
+	{ creatureCount++; std::cout << "Creature constructed\n";}
 
 Creature::Creature(std::string name, int health, int damage, int defense) 
 	: name(name)
@@ -31,7 +31,7 @@ Creature::Creature(std::string name, int health, int damage, int defense)
 	, damage(damage)
 	, startDamage(damage)
 	, defense(defense)
-	{ creatureCount++; }
+	{ creatureCount++; std::cout << "Creature constructed\n";}
 
 
 // Getters
