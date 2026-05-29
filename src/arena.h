@@ -19,12 +19,12 @@ public:
     void printBegin();
     void printTurn(int turn);
     void printWinner(Creature& winner);
-	bool validateBattle(Creatures creature);
+	bool validateBattle(Creatures& creature);
     bool takeTurn(Creature& acting, Creature& target); // return target->isAlive()
 
 private:
     bool hasWinner = false;
-    bool checkPulse(const Creature c);
+    void fightPair(Creature& a, Creature& b);
     Creatures defeated;
     Creatures creatures;
 };

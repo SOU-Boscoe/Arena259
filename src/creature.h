@@ -77,7 +77,12 @@ public:
 	virtual void specialMove(Creature& target);
 	Creature& chooseTarget(const Creatures& creatures, MODE m = MODE::RANDOM);
 
-	constexpr int specialChance();
+	constexpr int specialChance() {
+		float numerator = damage - MIN_DAMAGE;
+		float denominator = MAX_DAMAGE - MIN_DAMAGE;
+		int coeff = 25 - 10;
+		return 10 + (int)(numerator / denominator * coeff);
+	};
 
 	// Validation checks
 	static bool isValid(Creature& creature); 		// returns true if health and damage are in valid
