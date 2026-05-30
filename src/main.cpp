@@ -5,6 +5,7 @@
 #include "arena.h"
 #include "creature.h"
 #include "creatures.h"
+#include "utils.h"
 
 static const std::vector<std::string> CREATURE_NAMES = {
     "AbominableMudman", "Banshee",       "BlackHole",   "Boogeyman",
@@ -44,6 +45,12 @@ static void printRoster() {
 
 int main()
 {
+while(true) {
+
+    std::cout << Color::YELLOW << "\n\n\n=============================\n";
+    std::cout << "        WELCOME TO THE ARENA!        \n";
+    std::cout << "=============================\n" << Color::RESET;
+
     // --- Game mode selection ---
     int mode = 0;
     while (mode < 1 || mode > 3) {
@@ -121,6 +128,7 @@ int main()
     if      (mode == 1) arena.battle();
     else if (mode == 2) arena.battleRoyale();
     else                arena.tournament();
+}
 
     return 0;
 }

@@ -50,7 +50,7 @@ public:
 	Creature(std::string name, int health, int damage); 
 	Creature(std::string name, int health, int damage, int defense);
 
-	virtual ~Creature() = default;
+	virtual ~Creature();
 
 	// Getters
 	std::string getName() const; 					// returns the name variable
@@ -73,8 +73,8 @@ public:
 
 	// Damage other creatures
 	virtual void attack(Creature& target); 			// decreases health of target 
-	void takeDamage(int amount); 					// decrease this creature's health by amount - defense
 	virtual void specialMove(Creature& target);
+	void takeDamage(int amount); 					// decrease this creature's health by amount - defense
 	Creature& chooseTarget(const Creatures& creatures, MODE m = MODE::RANDOM);
 
 	constexpr int specialChance() {

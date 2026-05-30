@@ -13,6 +13,7 @@ class Arena
 {
 public:
     Arena(Creatures creatures) : creatures(std::move(creatures)) {};
+    ~Arena() { std::cout << "Arena destroyed" << std::endl; }
     void battle();
 	void battleRoyale();
 	void tournament();
@@ -21,6 +22,8 @@ public:
     void printWinner(Creature& winner);
 	bool validateBattle(Creatures& creature);
     bool takeTurn(Creature& acting, Creature& target); // return target->isAlive()
+
+    void addCreature(std::unique_ptr<Creature> creature);
 
 private:
     bool hasWinner = false;

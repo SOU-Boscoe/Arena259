@@ -46,6 +46,8 @@ bool Arena::takeTurn(Creature& acting, Creature& target) {
     return target.isAlive();
 }
 
+void Arena::addCreature(std::unique_ptr<Creature> creature) { creatures.push_back(std::move(creature)); }
+
 
 void Arena::fightPair(Creature& a, Creature& b) {
     Creature* first  = (RNG::flipCoin() == 1) ? &a : &b;
