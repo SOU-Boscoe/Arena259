@@ -3,72 +3,90 @@
 
 #include <string>
 #include <iostream>
+#include <memory>
+#include <vector>
+
+class Creature;
+using Creatures = std::vector<std::unique_ptr<Creature>>;
+
+// enum class that allows a creature to
+// choose who it attacks in multi-creature battles.
+// Used in Creature::chooseTarget()
+enum class MODE {
+    RANDOM = 0,
+    LOW_CUR_HP = 1,
+    HIGH_CUR_HP = 2,
+    LOW_MAX_HP = 3,
+    HIGH_MAX_HP = 4,
+    LOW_ATTACK = 5,
+    HIGH_ATTACK = 6,
+    LOW_DEFENSE = 7,
+    HIGH_DEFENSE = 8,
+    LOW_SPIRIT = 9,
+    HIGH_SPIRIT = 10
+};
 
 
-// added getters, setters, private static constants, and made variables protected
-// the getters and setters are just generally better practice, and the private static
-// constants are just so we can have an easily modifying range for valid health and valid damage.
-// also, leaving implementation in .cpp file is better so we don't have to worry what order we implement functions in (we can call methods within methods without worrying about compiler errors)
-
-
-// added line to force commit
 class Creature
 {
 private:
-	static int creatureCount; // will be increased in the constructor
-	static const int MIN_HEALTH = 80; // ranges for valid health and damage
+	static int creatureCount; 				// will be increased in the constructor
+	static const int MIN_HEALTH = 80; 		// ranges for valid health and damage
 	static const int MAX_HEALTH = 120;
 	static const int MIN_DAMAGE = 0;
 	static const int MAX_DAMAGE = 20;
 
 	std::string name;
-	int startHealth; // maxmimum health stat
+	int startHealth; 						// maxmimum health stat
 	int health;
-	int startDamage; // maximum damage stat
+	int startDamage; 						// maximum damage stat
 	int damage;
 	int damageDealt = 0;
 	int defense;
-	// the start variables don't get setters, since they don't ever change.
-	// we can't make them const though because they are declare on construction.
+
 
 public:
 	// Constructor 
 	Creature(std::string name, int health, int damage); 
 	Creature(std::string name, int health, int damage, int defense);
 
-	virtual ~Creature() = default;
+	virtual ~Creature();
 
 	// Getters
-	std::string getName() const; // returns the name variable
-	int getHealth() const; // returns the health variable
+	std::string getName() const; 					// returns the name variable
+	int getHealth() const; 							// returns the health variable
 	int getStartHealth() const;
-	int getDamage() const; // returns the damage variable
+	int getDamage() const; 							// returns the damage variable
 	int getStartDamage() const;
 	int getDamageDealt() const;
-	bool isAlive() const; // checks if the health is >= 0
-	static int getCreatureCount(); // get the total amount of creature instances
+	int getDefense() const;
+	bool isAlive() const; 							// checks if the health is >= 0
+	static int getCreatureCount(); 					// get the total amount of creature instances
 	
 	// Setters
-	void setName(const std::string&); // set name
-	void setHealth(const int&); // set health
-	void setDamage(const int&); // set damage
-	void heal(const int&); // increase health
-	void incDamage(const int&); // increase damage
-	void incDamageDealt(const int&); // increase damage dealt stat
+	void setName(std::string); 						// set name
+	void setHealth(int); 							// set health
+	void setDamage(int); 							// set damage
+	void heal(int); 								// increase health
+	void incDamage(int); 							// increase damage
+	void incDamageDealt(int); 						// increase damage dealt stat
 
 	// Damage other creatures
-	virtual void attack(Creature& target); // decreases health of target 
-	void takeDamage(int amount); // decrease this creature's health by amount - defense
-	
-	virtual void specialMove(Creature& other);
+	virtual void attack(Creature& target); 			// decreases health of target 
+	virtual void specialMove(Creature& target);
+	void takeDamage(int amount); 					// decrease this creature's health by amount - defense
+	Creature& chooseTarget(const Creatures& creatures, MODE m = MODE::RANDOM);
+
+	constexpr int specialChance() {
+		float numerator = damage - MIN_DAMAGE;
+		float denominator = MAX_DAMAGE - MIN_DAMAGE;
+		int coeff = 25 - 10;
+		return 10 + (int)(numerator / denominator * coeff);
+	};
 
 	// Validation checks
-	static bool validate(Creature&); // returns true if health and damage are in valid
-					 // ranges, false if otherwise (for balancing)
-	static bool validateBattle(Creature&, Creature&); // checks two creatures and makes sure both of them have valid stats, 
-							  // use before starting a battle between the two.
-							  // returns false if either are invalid
-							  // true if both are valid.
+	static bool isValid(Creature& creature); 		// returns true if health and damage are in valid
+											 		// ranges, false if otherwise (for balancing)
 };
 
 #endif
