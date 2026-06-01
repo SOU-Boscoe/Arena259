@@ -9,6 +9,7 @@ class Jeff : public Creature {
 public:
 	// Constructor 
 	Jeff();
+	~Jeff() override;
 
 	void specialMove(Creature& other) override;
 };
