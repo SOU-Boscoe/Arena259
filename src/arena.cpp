@@ -32,15 +32,35 @@ void Arena::printTurn(int turn) {
 }
 
 bool Arena::takeTurn(Creature& acting, Creature& target) {
-    if (RNG::randomValue(1, 100) <= acting.specialChance()) {
+    bool specialRolled = RNG::randomValue(1, 100) <= acting.specialChance();
+    bool canUseSpecial = !specialMovesDisabled && specialRolled;
+
+    if (canUseSpecial) {
         acting.specialMove(target);
         std::cout << acting.getName() << " uses SPECIAL MOVE!\n";
     }
     else {
+        if (specialMovesDisabled && specialRolled) {
+            std::cout << acting.getName()
+                      << " tries to use SPECIAL MOVE, but the arena event suppresses it!\n";
+        }
+
+        int baseDamage = acting.getDamage();
+        int displayedDamage = baseDamage;
+        if (eventAttackBonus > 0) {
+            acting.incDamage(eventAttackBonus);
+            displayedDamage += eventAttackBonus;
+        }
+
         acting.attack(target);
+
+        if (eventAttackBonus > 0) {
+            acting.setDamage(baseDamage);
+        }
+
         std::cout << colorMe(acting.getName(), Color::CYAN) << " attacks "
                   << colorMe(target.getName(), Color::RED) << " for "
-                  << colorMe(std::to_string(acting.getDamage()), Color::YELLOW) << " damage! "
+                  << colorMe(std::to_string(displayedDamage), Color::YELLOW) << " damage! "
                   << colorMe("(" + std::to_string(target.getHealth()) + " HP remaining)", Color::WHITE) << "\n";
     }
     return target.isAlive();
@@ -54,6 +74,10 @@ void Arena::fightPair(Creature& a, Creature& b) {
     Creature* second = (first == &a) ? &b : &a;
 
     std::cout << first->getName() << " vs " << second->getName() << "\n";
+
+    RoundEvent event = rollRoundEvent();
+    announceRoundEvent(event);
+    applyRoundEvent(event);
 
     hasWinner = false;
     int turn = 1;
@@ -83,6 +107,10 @@ void Arena::battleRoyale()
     std::vector<Creature*> still_alive;
 
     printBegin();
+
+    RoundEvent event = rollRoundEvent();
+    announceRoundEvent(event);
+    applyRoundEvent(event);
 
     hasWinner = false;
     
@@ -182,6 +210,58 @@ void Arena::tournament() {
     std::cout << "- The tournament champion is: "
               << creatures[0]->getName() << "! -\n";
     printWinner(*creatures[0]);
+}
+
+RoundEvent Arena::rollRoundEvent() {
+    int roll = RNG::randomValue(1, 100);
+
+    // weighted event logic here -- to change chance, alter roll value checks
+    if (roll <= 50) return RoundEvent::NONE;
+    if (roll <= 75) return RoundEvent::STRENGTH_EVENT;
+    return RoundEvent::SPECIAL_EVENT;
+}
+
+void Arena::announceRoundEvent(RoundEvent event) {
+    std::cout << "\n=== Combat Modifier ===\n";
+    std::cout << "This fight: ";
+
+    switch (event) {
+        case RoundEvent::NONE:
+            std::cout << "No modifier this fight" << std::endl;
+            break;
+        case RoundEvent::STRENGTH_EVENT:
+            std::cout << "Strength event (+3 attack on normal attacks)" << std::endl;
+            break;
+        case RoundEvent::SPECIAL_EVENT:
+            std::cout << "Special event (special moves disabled)" << std::endl;
+            break;
+        default:
+            std::cout << "No modifier this fight" << std::endl;
+            break;
+    }
+
+    std::cout << "=======================\n";
+}
+
+void Arena::applyRoundEvent(RoundEvent event) {
+    eventAttackBonus = 0;
+    specialMovesDisabled = false;
+
+    switch (event) {
+        case RoundEvent::NONE:
+            break;
+
+        case RoundEvent::STRENGTH_EVENT:
+            eventAttackBonus = 3;
+            break;
+
+        case RoundEvent::SPECIAL_EVENT:
+            specialMovesDisabled = true;
+            break;
+
+        default:
+            break;
+    }
 }
 
 // void Arena::printStats(Creature& a, Creature& b, int turns) {
