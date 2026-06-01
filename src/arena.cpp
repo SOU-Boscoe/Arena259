@@ -46,7 +46,10 @@ bool Arena::takeTurn(Creature& acting, Creature& target) {
     return target.isAlive();
 }
 
-void Arena::addCreature(std::unique_ptr<Creature> creature) { creatures.push_back(std::move(creature)); }
+void Arena::addCreature(std::unique_ptr<Creature> creature) { 
+    creatures.push_back(std::move(creature));
+    std::cout << "Arena now has " << creatures.size() << " fighters\n";
+}
 
 
 void Arena::fightPair(Creature& a, Creature& b) {
