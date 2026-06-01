@@ -216,9 +216,9 @@ RoundEvent Arena::rollRoundEvent() {
     int roll = RNG::randomValue(1, 100);
 
     // weighted event logic here -- to change chance, alter roll value checks
-    if (roll <= 50) return RoundEvent::NONE;
-    if (roll <= 75) return RoundEvent::STRENGTH_EVENT;
-    return RoundEvent::SPECIAL_EVENT;
+    if (roll <= 0) return RoundEvent::SPECIAL_EVENT;
+    if (roll <= 0) return RoundEvent::STRENGTH_EVENT;
+    return RoundEvent::NONE;
 }
 
 void Arena::announceRoundEvent(RoundEvent event) {
