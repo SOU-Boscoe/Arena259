@@ -86,3 +86,27 @@ void Arena::printStats(Creature& a, Creature& b, int turns) {
     std::cout << b.getName() << " Damage Dealt: " << b.getDamageDealt() << std::endl;
 
 }
+
+void Arena::addFighter(std::unique_ptr<Creature> fighter){
+    fighters.push_back(std::move(fighter));
+    std::cout << "Arena has " << fighters.size() << " fighters" << std::endl;
+}
+
+void Arena::battle(int first, int second){
+    if(first < 0 || first >= fighters.size() || second < 0 || second >= fighters.size()){
+        std::cout << "Invalid fighter index" << std::endl;
+        return;
+    }
+    if(first == second){
+        std::cout << "A fighter cant fight against itself" << std::endl;
+        return;
+    }
+
+    std::cout << fighters[first]->getName() << " vs " << fighters[second]->getName() << std::endl;
+
+    fighters[first]->attack(*fighters[second]);
+    std::cout << fighters[first]->getName() << " attacks " << fighters[second]->getName() << std::endl;
+
+    fighters[second]->specialMove(*fighters[first]);
+    std::cout << "Battle finished!" << std::endl;
+}

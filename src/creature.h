@@ -35,8 +35,7 @@ public:
 	// Constructor 
 	Creature(std::string name, int health, int damage); 
 	Creature(std::string name, int health, int damage, int defense);
-
-	virtual ~Creature() = default;
+	Creature();
 
 	// Getters
 	std::string getName() const; // returns the name variable
@@ -61,7 +60,7 @@ public:
 	void takeDamage(int amount); // decrease this creature's health by amount - defense
 	
 	virtual void specialMove(Creature& other);
-	virtual ~Creature() = default;
+	virtual ~Creature();
 
 	// Validation checks
 	static bool validate(Creature&); // returns true if health and damage are in valid

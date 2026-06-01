@@ -5,6 +5,7 @@
 class Clawdragon : public Creature{
 public:
     Clawdragon();
+    ~Clawdragon() override;
 
     void specialMove(Creature& other) override;
 };

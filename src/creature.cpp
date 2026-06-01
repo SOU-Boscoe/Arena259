@@ -33,6 +33,14 @@ Creature::Creature(std::string name, int health, int damage, int defense)
 	, defense(defense)
 	{ creatureCount++; }
 
+Creature::Creature(){
+	std::cout << "Creature constructed" << std::endl;
+}
+
+// Destructors
+Creature::~Creature(){
+	std::cout << "Creature Destroyed" << std::endl;
+}
 
 // Getters
 std::string Creature::getName() const {

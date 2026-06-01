@@ -7,7 +7,12 @@
 
 Clawdragon::Clawdragon()
     : Creature("Clawdragon", 101, 18){
+        std::cout << "Clawdragon constructed" << std::endl;
     }
+
+Clawdragon::~Clawdragon(){
+    std::cout << "Clawdragon destroyed" << std::endl;
+}
 
 void Clawdragon::specialMove(Creature& other){
     int slashDamage = RNG::randomValue(10, 25);
